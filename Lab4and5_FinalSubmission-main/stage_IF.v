@@ -70,10 +70,10 @@ module stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF,
     
 
     //Mux32Bit2To1(inA, inB, sel, out);
-    Mux32Bit2To1 a1(PCAdder_out_IF, AddALU_out_MEM, PCSrc, mux4_result_IF);
+    Mux32Bit2To1 mux4(PCAdder_out_IF, AddALU_out_MEM, PCSrc, mux4_result_IF);
     
     //Mux32Bit2To1(inA, inB, sel, out);
-    Mux32Bit2To1 a2(mux4_result_IF, mux3_result, JR, mux5_result_IF);
+    Mux32Bit2To1 mux5(mux4_result_IF, mux3_result, JR, mux5_result_IF);
     
     //Mux32Bit2To1(inA, inB, sel, out);
     Mux32Bit2To1 mux10(mux5_result_IF, mux3_result, j_and_jal, mux10_result_IF);
