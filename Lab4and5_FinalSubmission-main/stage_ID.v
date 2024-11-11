@@ -1,7 +1,8 @@
 module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_in, WriteData_in,
                     RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
                     ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
-                    rt_ID, rd_ID, JR_ID, size_ID, Clk_in, write_data_pin, special_rt_ID, j_and_jal_ID);
+                    rt_ID, rd_ID, JR_ID, size_ID, Clk_in, write_data_pin, special_rt_ID, j_and_jal_ID,
+                    ALUAddResult_ID);
 
   input [31:0] PCAddResult_in_ID;
   input [31:0] Instruction_ID;
@@ -14,7 +15,8 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
   wire [31:0] mux7_result_ID;  
   wire JAL_ID;
   wire RegWrite_JAL;
-
+  //wire [31:0] SignExtResult_ID;
+  wire [31:0] SL_result_ID;
 
   output RegWrite_out_ID;
   output MemtoReg_ID;
@@ -35,6 +37,7 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
   output special_rt_ID;
   output [1:0] size_ID;
   output [31:0] write_data_pin;
+  output [31:0] ALUAddResult_ID;
 
   assign PCAddResult_out_ID = PCAddResult_in_ID;
   assign rt_ID = Instruction_ID[20:16];
@@ -55,6 +58,12 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
   
   //Mux32Bit2To1(inA, inB, sel, out);
   Mux32Bit2To1 b5(WriteData_in, PCAddResult_in_ID, JAL_ID, mux7_result_ID);
+  
+  //ShiftLeft2(in, out);
+  ShiftLeft2 b6(SignExtResult_ID, SL_result_ID);
+  
+  //ALUAdd(A, B, ALUAddResult);
+  ALUAdd b7(PCAddResult_in_ID, SL_result_ID, ALUAddResult_ID);
   
   assign write_data_pin = mux7_result_ID;
 
