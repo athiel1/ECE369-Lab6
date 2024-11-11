@@ -60,6 +60,7 @@ module Top_Level(Reset, Clk, out7, en_out);
     wire [1:0] size_out_IDEX;
     wire [1:0] size_out_EX;
     wire [1:0] size_out_EXMEM;
+    wire [31:0] ALUAddResult_ID;
     
     
     //ClkDiv(Clk, Rst, ClkOut);
@@ -68,12 +69,14 @@ module Top_Level(Reset, Clk, out7, en_out);
     
     //stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF, 
     //         PCAdder_out_IF, Clk_in, Rst, PC_pin);
-    stage_IF top1(PCSrc_MEM, ALUAddResult_out_EXMEM, JR_out_MEMWB, mux3_result_WB, Instruction_IF, 
+    stage_IF top1(PCSrc_MEM, ALUAddResult_ID, JR_out_MEMWB, mux3_result_WB, Instruction_IF, 
                     PCAdder_out_IF, ClkOut, Reset, PC_pin_out, j_and_jal_out_MEMWB, mux3_result_WB);
     
     
     //IF_ID(PCAdder_in_IFID, Instruction_in_IFID, PCAdder_out_IFID, Instruction_out_IFID, Clk_in);
     IF_ID top2(PCAdder_out_IF, Instruction_IF, PCAdder_out_IFID, Instruction_out_IFID, ClkOut, Reset);
+    
+    //IF_ID(PCAdder_in_IFID, Instruction_in_IFID, PCAdder_out_IFID, Instruction_out_IFID, Clk_in, Rst);
     
     
     //stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_in, WriteData_in,
@@ -83,7 +86,8 @@ module Top_Level(Reset, Clk, out7, en_out);
     stage_ID top3(PCAdder_out_IFID, Instruction_out_IFID, RegWrite_out_MEMWB, mux2_result_out_MEMWB, mux3_result_WB,
                     RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
                     ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
-                    rt_ID, rd_ID, JR_ID, size_ID, ClkOut, write_data_pin, special_rt_ID, j_and_jal_ID);
+                    rt_ID, rd_ID, JR_ID, size_ID, ClkOut, write_data_pin, special_rt_ID, j_and_jal_ID,
+                    ALUAddResult_ID);
                     
     //ID_EX(PCAddResult_in_IDEX, ReadData1_in_IDEX, ReadData2_in_IDEX, signExtend_in_IDEX, rt_in_IDEX, 
     //            rd_in_IDEX, RegWrite_in_IDEX, MemtoReg_in_IDEX, Branch_in_IDEX, MemRead_in_IDEX, 
@@ -92,10 +96,10 @@ module Top_Level(Reset, Clk, out7, en_out);
     //            rt_out_IDEX, rd_out_IDEX, RegWrite_out_IDEX, MemtoReg_out_IDEX, Branch_out_IDEX, 
     //            MemRead_out_IDEX, MemWrite_out_IDEX, RegDst_out_IDEX, ALUOp_out_IDEX, ALUSrc_out_IDEX,
     //           size_in_IDEX, size_out_IDEX, Clk_in, Rst);  
-    ID_EX top4(PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, rt_ID,
+    ID_EX top4(/*PCAddResult_out_ID,*/ ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, rt_ID,
                 rd_ID, RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID,
                 MemWrite_ID, RegDst_ID, ALUOp_ID, ALUSrc_ID,
-                PCAddResult_out_IDEX, ReadData1_out_IDEX, ReadData2_out_IDEX, signExtend_out_IDEX, 
+                /*PCAddResult_out_IDEX,*/ ReadData1_out_IDEX, ReadData2_out_IDEX, signExtend_out_IDEX, 
                 rt_out_IDEX, rd_out_IDEX, RegWrite_out_IDEX, MemtoReg_out_IDEX, Branch_out_IDEX, 
                 MemRead_out_IDEX, MemWrite_out_IDEX, 
                 RegDst_out_IDEX, ALUOp_out_IDEX, ALUSrc_out_IDEX,
@@ -123,10 +127,10 @@ module Top_Level(Reset, Clk, out7, en_out);
      //           ReadData2_out_EXMEM, mux2_Result_out_EXMEM,
      //           size_in_EXMEM, size_out_EXMEM, Clk_in, Rst);
      EX_MEM top6(MemWrite_out_EX, MemRead_out_EX, Branch_out_EX, MemtoReg_out_EX, 
-                RegWrite_out_EX, ALUAddResult_EX, Zero_EX, ALUResult_EX, 
+                RegWrite_out_EX, /*ALUAddResult_EX,*/ Zero_EX, ALUResult_EX, 
                 ReadData2_out_EX, mux2_result_EX, 
                 MemWrite_out_EXMEM, MemRead_out_EXMEM, Branch_out_EXMEM, MemtoReg_out_EXMEM, 
-                RegWrite_out_EXMEM, ALUAddResult_out_EXMEM, Zero_out_EXMEM, ALUResult_out_EXMEM, 
+                RegWrite_out_EXMEM, /*ALUAddResult_out_EXMEM,*/ Zero_out_EXMEM, ALUResult_out_EXMEM, 
                 ReadData2_out_EXMEM, mux2_Result_out_EXMEM,
                 size_out_EX, size_out_EXMEM, ClkOut, Reset, JR_out_EX, JR_out_EXMEM, j_and_jal_out_EX, j_and_jal_out_EXMEM);
                 
