@@ -59,10 +59,10 @@ module stage_EX (RegWrite_in_EX, MemtoReg_in_EX, Branch_in_EX, MemRead_in_EX, Me
   assign j_and_jal_out_EX = j_and_jal_in_EX;
 
   //ShiftLeft2(in, out);
-  ShiftLeft2 c1(SignExtResult_EX, SL_result_EX);
+  //ShiftLeft2 c1(SignExtResult_EX, SL_result_EX);
   
   //ALUAdd(A, B, ALUAddResult);
-  ALUAdd c2(PCAddResult_EX, SL_result_EX, ALUAddResult_EX);
+  //ALUAdd c2(PCAddResult_EX, SL_result_EX, ALUAddResult_EX);
 
   //Mux32Bit2To1(inA, inB, sel, out);
   Mux32Bit2To1 c3(ReadData2_in_EX, SignExtResult_EX, ALUSrc_EX, mux1_result_EX);
