@@ -49,6 +49,7 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
   output IFIDWrite_ID;
 
   assign PCAddResult_out_ID = PCAddResult_in_ID;
+  assign rs_ID = Instruction_ID[25:21];
   assign rt_ID = Instruction_ID[20:16];
   assign rd_ID = Instruction_ID[15:11];
   
