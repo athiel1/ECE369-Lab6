@@ -36,6 +36,7 @@ module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
     wire [31:0] ReadData2_out_ID;
     wire [31:0] SignExtResult_ID;
     wire [31:0] PCAddResult_out_ID;
+    wire [4:0] rs_ID;
     wire [4:0] rt_ID;
     wire [4:0] rd_ID;
     wire [31:0] PCAddResult_out_IDEX;
@@ -85,14 +86,15 @@ module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
     
     
     //stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_in, WriteData_in,
-    //                RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
-    //                ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
-    //                rt_ID, rd_ID, JR_ID, size_ID, Clk_in);
+                    //RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
+                    //ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
+                    //rt_ID, rd_ID, JR_ID, size_ID, Clk_in, write_data_pin, special_rt_ID, j_and_jal_ID,
+                    //ALUAddResult_ID, rs_IFID, rt_IFID, MemRead_IDEX, RegisterRt_IDEX, RegisterRd_IDEX, PCWrite_ID, IFIDWrite_ID);
     stage_ID top3(PCAdder_out_IFID, Instruction_out_IFID, RegWrite_out_MEMWB, mux2_result_out_MEMWB, mux3_result_WB,
                     RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
                     ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
                     rt_ID, rd_ID, JR_ID, size_ID, ClkOut, write_data_pin, special_rt_ID, j_and_jal_ID,
-                    ALUAddResult_ID);
+                    ALUAddResult_ID, rs_ID, rt_ID, MemRead_out_IDEX, rt_out_IDEX, rd_out_IDEX, PCWrite_ID, IFIDWrite_ID);
                     
     //ID_EX(PCAddResult_in_IDEX, ReadData1_in_IDEX, ReadData2_in_IDEX, signExtend_in_IDEX, rt_in_IDEX, 
     //            rd_in_IDEX, RegWrite_in_IDEX, MemtoReg_in_IDEX, Branch_in_IDEX, MemRead_in_IDEX, 
