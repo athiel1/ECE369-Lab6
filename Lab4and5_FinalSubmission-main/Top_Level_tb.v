@@ -20,18 +20,25 @@ module Top_Level_tb();
     //wire [31:0] PC_current;
     //wire [31:0] DestRegValue;
     
-    //wire [31:0] PC_pin_out_tb;
-    //wire [31:0] write_data_pin_tb;
+    wire [31:0] PC_pin_out_tb;
+    wire [31:0] write_data_pin_tb;
     
-    wire [6:0] out7_tb;
-    wire [7:0] en_out_tb;
+    //wire [6:0] out7_tb;
+    //wire [7:0] en_out_tb;
     
     // Instantiate the Top_Level module
-    Top_Level DUT(
+    /*Top_Level DUT(
         .Reset(Rst_tb),
-        .Clk(Clk_tb),
+        .ClkOut(Clk_tb),
         .out7(out7_tb),
         .en_out(en_out_tb)
+    );*/
+    
+    Top_Level DUT(
+        .Reset(Rst_tb),
+        .ClkOut(Clk_tb),
+        .PC_pin_out(PC_pin_out_tb),
+        .write_data_pin(write_data_pin_tb)
     );
 
     // Connect the internal signals to the DUT's output signals
