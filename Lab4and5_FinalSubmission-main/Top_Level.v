@@ -9,17 +9,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Top_Level(Reset, Clk, out7, en_out);
+//module Top_Level(Reset, Clk, out7, en_out);
+module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
 
     input Reset;
-    input Clk;
+    //input Clk;
+    input ClkOut;
     
-    wire [31:0] PC_pin_out;
-    wire [31:0] write_data_pin;
-    wire ClkOut;
+    //wire [31:0] PC_pin_out;
+    //wire [31:0] write_data_pin;
+    //wire ClkOut;
     
-    output [6:0] out7;
-    output [7:0] en_out;
+    //output [6:0] out7;
+    //output [7:0] en_out;
+    
+    output [31:0] PC_pin_out;
+    output [31:0] write_data_pin;
     
     wire [31:0] Instruction_IF;
     wire [31:0] PCAdder_out_IF;
@@ -64,7 +69,7 @@ module Top_Level(Reset, Clk, out7, en_out);
     
     
     //ClkDiv(Clk, Rst, ClkOut);
-    ClkDiv clock(Clk, 0, ClkOut);
+    //ClkDiv clock(Clk, Reset, ClkOut);
     
     
     //stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF, 
@@ -114,7 +119,7 @@ module Top_Level(Reset, Clk, out7, en_out);
      stage_EX top5(RegWrite_out_IDEX, MemtoReg_out_IDEX, Branch_out_IDEX, MemRead_out_IDEX, MemWrite_out_IDEX, RegDst_out_IDEX,
                     ALUOp_out_IDEX, ALUSrc_out_IDEX, PCAddResult_out_IDEX, ReadData1_out_IDEX, ReadData2_out_IDEX, signExtend_out_IDEX,
                     rt_out_IDEX, rd_out_IDEX, RegWrite_out_EX, MemtoReg_out_EX, 
-                    Branch_out_EX, MemRead_out_EX, MemWrite_out_EX, ALUAddResult_EX, Zero_EX, ALUResult_EX, 
+                    Branch_out_EX, MemRead_out_EX, MemWrite_out_EX, /*ALUAddResult_EX,*/ Zero_EX, ALUResult_EX, 
                     ReadData2_out_EX, mux2_result_EX, size_out_IDEX, size_out_EX, JR_out_IDEX, JR_out_EX, special_rt_out_IDEX,
                     j_and_jal_out_IDEX, j_and_jal_out_EX);
                     
@@ -165,7 +170,7 @@ module Top_Level(Reset, Clk, out7, en_out);
        
        
        //Two4DigitDisplay(Clk, NumberA, NumberB, out7, en_out);
-       Two4DigitDisplay display(Clk, write_data_pin, PC_pin_out, out7, en_out);
+       //Two4DigitDisplay display(ClkOut, write_data_pin, PC_pin_out, out7, en_out);
                    
 
 endmodule
