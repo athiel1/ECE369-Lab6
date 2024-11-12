@@ -1,0 +1,7 @@
+Tuesday, 11/12:
+- need to add new mux with control signal PCWrite
+- Controller.v is updated
+- Stage_ID.v is updated
+- Top_Level.v is updated
+
+
