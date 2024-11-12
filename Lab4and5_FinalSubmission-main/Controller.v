@@ -20,11 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(Instruction, RegDst, ALUOp, ALUSrc, Branch, MemRead, MemWrite, MemtoReg, RegWrite, JR, JAL, size, RegWrite_JAL, special_rt, j_and_jal);
+module Controller(Instruction, hazardControl, RegDst, ALUOp, ALUSrc, Branch, MemRead, MemWrite, MemtoReg, RegWrite, JR, JAL, size, RegWrite_JAL, special_rt, j_and_jal);
     //input wire Clk;
     //input wire Rst;
     
     input [31:0] Instruction;
+    input hazardControl;
     //input Zero; might become isEqual later 
     
     output reg RegDst;
@@ -416,7 +417,7 @@ module Controller(Instruction, RegDst, ALUOp, ALUSrc, Branch, MemRead, MemWrite,
                 
             endcase
             if (Instruction == 32'b0) begin
-                RegDst <= 0;
+                    RegDst <= 0;
                     ALUOp <= 6'b000000;
                     ALUSrc <= 0;
                     Branch <= 0;
@@ -430,6 +431,22 @@ module Controller(Instruction, RegDst, ALUOp, ALUSrc, Branch, MemRead, MemWrite,
                     size <= 0;
                     RegWrite_JAL <= 0;
                     special_rt <= 0;
+            end
+            else if (hazardControl) begin
+                RegDst <= 0;
+                ALUOp <= 6'b000000;
+                ALUSrc <= 0;
+                Branch <= 0;
+                MemRead <= 0;
+                MemWrite <= 0;
+                MemtoReg <= 0;
+                RegWrite <= 0;  
+                JR <= 0;  
+                JAL <= 0;
+                j_and_jal <= 0;
+                size <= 0;
+                RegWrite_JAL <= 0;
+                special_rt <= 0;
             end
         end
    // end
