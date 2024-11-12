@@ -27,16 +27,15 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
     input [4:0] rs;
     input [4:0] rt;
     
-    output IFIDWrite;
-    output PCWrite;
-    output hazardControl;
+    output reg IFIDWrite;
+    output reg PCWrite;
+    output reg hazardControl;
     
     always @(*) begin
-   
-    
         if (MemRead) begin
-            if ((RegisterRt == rs) or (RegisterRt == rt)) begin
-            
+            if ((RegisterRt == rs) | (RegisterRt == rt)) begin
+                PCWrite <= 0;
+                IFIDWrite <= 1;
             end
         end
     
@@ -48,4 +47,3 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
 
 
 endmodule
-
