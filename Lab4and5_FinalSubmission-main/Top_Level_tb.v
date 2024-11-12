@@ -27,7 +27,7 @@ module Top_Level_tb();
     wire [7:0] en_out_tb;
     
     // Instantiate the Top_Level module
-    Top_Level DUT (
+    Top_Level DUT(
         .Reset(Rst_tb),
         .Clk(Clk_tb),
         .out7(out7_tb),
