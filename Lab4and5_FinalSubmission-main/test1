@@ -1,0 +1,21 @@
+Test 1: addi and add dependancy
+* has a dependancy on $t0
+* should stall for 4? cylces
+
+.data
+
+.text
+.globl main
+
+    # Load values
+main:
+
+addi $t0, $zero, 4    // PC = 0, write_data = 4
+add $t1, $t0, $t0     // PC = 4, write_data = 8
+
+.end
+
+
+
+20080004
+01084820
