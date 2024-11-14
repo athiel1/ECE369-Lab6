@@ -2,7 +2,7 @@
 module stage_EX (RegWrite_in_EX, MemtoReg_in_EX, Branch_in_EX, MemRead_in_EX, MemWrite_in_EX, RegDst_EX, 
                  ALUOp_EX, ALUSrc_EX, PCAddResult_EX, ReadData1_EX, ReadData2_in_EX, SignExtResult_EX, 
                  rt_EX, rd_EX, RegWrite_out_EX, MemtoReg_out_EX, 
-                 Branch_out_EX, MemRead_out_EX, MemWrite_out_EX, ALUAddResult_EX, Zero_EX, ALUResult_EX, 
+                 Branch_out_EX, MemRead_out_EX, MemWrite_out_EX, /*ALUAddResult_EX,*/ Zero_EX, ALUResult_EX, 
                  ReadData2_out_EX, mux2_result_EX, size_in_EX, size_out_EX, JR_in_EX, JR_out_EX, special_rt_EX, j_and_jal_in_EX, j_and_jal_out_EX);
 
   input RegWrite_in_EX;
@@ -30,7 +30,7 @@ module stage_EX (RegWrite_in_EX, MemtoReg_in_EX, Branch_in_EX, MemRead_in_EX, Me
   output Branch_out_EX;
   output MemRead_out_EX;
   output MemWrite_out_EX;
-  output [31:0] ALUAddResult_EX;
+  //output [31:0] ALUAddResult_EX;
   output Zero_EX;
   output [31:0] ALUResult_EX;
   output [31:0] ReadData2_out_EX;
