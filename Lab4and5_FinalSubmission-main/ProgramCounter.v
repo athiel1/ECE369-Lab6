@@ -24,10 +24,11 @@
 // location, 0x00000000H).
 ////////////////////////////////////////////////////////////////////////////////
 
-module ProgramCounter(Address, PCResult, Rst, Clk);
+module ProgramCounter(Address, PCResult, Rst, Clk, PCWrite);
 
 	input [31:0] Address;
 	input Rst, Clk;
+	input PCWrite;
 
 	output reg [31:0] PCResult;
 	
@@ -40,7 +41,8 @@ module ProgramCounter(Address, PCResult, Rst, Clk);
         if (Rst) begin
             PCResult <= 32'b0; // Reset the PC to 0
         end else begin
-            PCResult <= Address; // Update PC with the Address
+            if (PCWrite)
+                PCResult <= Address; // Update PC with the Address
         end
         $display ("PC = %d", PCResult);
     end
