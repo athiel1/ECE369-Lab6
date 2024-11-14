@@ -39,7 +39,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF, 
-                        PCAdder_out_IF, Clk_in, Rst, PC_pin, j_and_jal, mux3_result);  
+                        PCAdder_out_IF, Clk_in, Rst, PC_pin, j_and_jal, mux3_result, PCWrite_IF);  
 
     input Rst, Clk_in;
     input PCSrc;
@@ -48,6 +48,7 @@ module stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF,
     input [31:0] ReadData1_ID;
     input j_and_jal;
     input [31:0] mux3_result;
+    input PCWrite_IF;
     
     output [31:0] Instruction_IF;
     output [31:0] PCAdder_out_IF;
@@ -79,7 +80,7 @@ module stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF,
     Mux32Bit2To1 mux10(mux5_result_IF, mux3_result, j_and_jal, mux10_result_IF);
     
     //ProgramCounter(Address, PCResult, Rst, Clk);
-    ProgramCounter a3(mux10_result_IF, PCResult_IF, Rst, Clk_in);
+    ProgramCounter a3(mux10_result_IF, PCResult_IF, Rst, Clk_in, PCWrite_IF);
     
     //PCAdder(PCResult, PCAddResult);
     PCAdder a4(PCResult_IF, PCAdder_out_IF);
