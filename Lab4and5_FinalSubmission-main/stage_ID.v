@@ -2,7 +2,8 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
                     RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
                     ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
                     rt_ID, rd_ID, JR_ID, size_ID, Clk_in, write_data_pin, special_rt_ID, j_and_jal_ID,
-                    ALUAddResult_ID, /*rs_IFID, rt_IFID,*/ MemRead_IDEX, RegisterRt_IDEX, RegisterRd_IDEX, PCWrite_ID, IFIDWrite_ID);
+                    ALUAddResult_ID, /*rs_IFID, rt_IFID,*/ MemRead_IDEX, RegisterRt_IDEX, RegisterRd_IDEX, PCWrite_ID, IFIDWrite_ID,
+                    Branch_IDEX, JR_IDEX, j_and_jal_IDEX);
 
   input [31:0] PCAddResult_in_ID;
   input [31:0] Instruction_ID;
@@ -15,6 +16,9 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
   input MemRead_IDEX;
   input [4:0] RegisterRt_IDEX;
   input [4:0] RegisterRd_IDEX;
+  input Branch_IDEX; 
+  input JR_IDEX;
+  input j_and_jal_IDEX;
   
   wire [4:0] mux6_result_ID;
   wire [31:0] mux7_result_ID;  
@@ -59,10 +63,11 @@ module stage_ID (PCAddResult_in_ID, Instruction_ID, RegWrite_in, WriteRegister_i
 
   //SignExtension(Instruction, out);
   SignExtension b2(Instruction_ID, SignExtResult_ID);
-  
+ 
   //Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazardControl);
-  //Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazardControl);
-  Hazard haz(MemRead_IDEX, RegisterRt_IDEX, RegisterRd_IDEX, rs_ID, rt_ID, IFIDWrite_ID, PCWrite_ID, hazardControl_ID, Clk_in); 
+  //Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazardControl, Clk, Branch, JR, JAL, j_and_jal);
+  Hazard haz(MemRead_IDEX, RegisterRt_IDEX, RegisterRd_IDEX, rs_ID, rt_ID, IFIDWrite_ID, PCWrite_ID, hazardControl_ID, Clk_in,
+             Branch_IDEX, JR_IDEX, JAL_ID, j_and_jal_IDEX); 
 
   //Controller(Instruction, RegDst, ALUOp, ALUSrc, Branch, MemRead, MemWrite, MemtoReg, RegWrite, JR, JAL, size, RegWrite_JAL, special_rt);
   Controller b3(Instruction_ID, hazardControl_ID, RegDst_ID, ALUOp_ID, ALUSrc_ID, Branch_ID, MemRead_ID, MemWrite_ID, MemtoReg_ID, RegWrite_out_ID, JR_ID, JAL_ID, size_ID, RegWrite_JAL, special_rt_ID, j_and_jal_ID);
