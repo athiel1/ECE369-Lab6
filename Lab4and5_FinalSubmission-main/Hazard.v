@@ -32,31 +32,36 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
     output reg PCWrite;
     output reg hazardControl;
     
+    reg enable;
+    
     initial begin
         PCWrite <= 1;
         IFIDWrite <= 1;
         hazardControl <= 0;
-        repeat(2) @(posedge Clk);
+        enable = 0;
+        repeat(4) @(posedge Clk);
+        enable = 1;
     end
     
     always @(*) begin
-        PCWrite <= 1;
-        IFIDWrite <= 1;
-        hazardControl <= 0;
-        
-        if (MemRead) begin
-            if ((RegisterRt == rs) | (RegisterRt == rt)) begin
-                PCWrite <= 0;
-                IFIDWrite <= 0;
-                hazardControl = 1;
+        if (enable) begin
+            PCWrite <= 1;
+            IFIDWrite <= 1;
+            hazardControl <= 0;
+            
+            if (MemRead) begin
+                if ((RegisterRt == rs) | (RegisterRt == rt)) begin
+                    PCWrite <= 0;
+                    IFIDWrite <= 0;
+                    hazardControl = 1;
+                end
+            end
+            else if ((RegisterRd == rs) | (RegisterRd == rt)) begin
+                    PCWrite <= 0; 
+                    IFIDWrite <= 0; 
+                    hazardControl = 1;
             end
         end
-        else if ((RegisterRd == rs) | (RegisterRd == rt)) begin
-                PCWrite <= 0; 
-                IFIDWrite <= 0; 
-                hazardControl = 1;
-        end
-       
     end 
 
 
