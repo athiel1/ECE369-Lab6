@@ -20,19 +20,24 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazardControl, Clk);
+module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazardControl, Clk, Branch, JR, JAL, j_and_jal);
     input MemRead;
     input [4:0] RegisterRt;
     input [4:0] RegisterRd;
     input [4:0] rs;
     input [4:0] rt;
     input Clk;
+    input Branch;
+    input JR;
+    input JAL;
+    input j_and_jal;
     
     output reg IFIDWrite;
     output reg PCWrite;
     output reg hazardControl;
     
     reg enable;
+    reg jumpCase;
     
     initial begin
         PCWrite <= 1;
@@ -44,7 +49,12 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
     end
     
     always @(*) begin
-        if (enable) begin
+        jumpCase = 0;
+        if (JR | JAL | j_and_jal) begin
+            jumpCase = 1;
+        end
+        
+        if (enable & ~jumpCase & ~Branch) begin
             PCWrite <= 1;
             IFIDWrite <= 1;
             hazardControl <= 0;
@@ -54,18 +64,50 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
                     PCWrite <= 0;
                     IFIDWrite <= 0;
                     hazardControl <= 1;
+                    repeat(3) @(posedge Clk);
+                    PCWrite <= 1;
+                    IFIDWrite <= 1;
+                    hazardControl <= 0;
                 end
             end
             else if ((RegisterRd == rs) | (RegisterRd == rt)) begin
                     PCWrite <= 0; 
                     IFIDWrite <= 0; 
                     hazardControl <= 1;
+                    repeat(3) @(posedge Clk);
+                    PCWrite <= 1;
+                    IFIDWrite <= 1;
+                    hazardControl <= 0;
             end
             else if ((RegisterRt == rs) | (RegisterRt == rt)) begin
                     PCWrite <= 0;
                     IFIDWrite <= 0;
                     hazardControl <= 1;
-                end
+                    repeat(3) @(posedge Clk);
+                    PCWrite <= 1;
+                    IFIDWrite <= 1;
+                    hazardControl <= 0;
+            end
+        end 
+        else if (enable & ~jumpCase & Branch) begin
+        // branch case
+            PCWrite <= 0;
+            IFIDWrite <= 0;
+            hazardControl <= 1;
+            repeat(4) @(posedge Clk);
+            PCWrite <= 1;
+            IFIDWrite <= 1;
+            hazardControl <= 0;
+        end
+        else if (enable & jumpCase & ~Branch) begin
+         // jump case
+            PCWrite <= 0;
+            IFIDWrite <= 0;
+            hazardControl <= 1;
+            repeat(2) @(posedge Clk);
+            PCWrite <= 1;
+            IFIDWrite <= 1;
+            hazardControl <= 0;
         end
     end 
 
