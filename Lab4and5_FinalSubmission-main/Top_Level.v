@@ -67,6 +67,9 @@ module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
     wire [1:0] size_out_EX;
     wire [1:0] size_out_EXMEM;
     wire [31:0] ALUAddResult_ID;
+    wire PCWrite_ID;
+    wire IFIDWrite_ID;
+    wire MemRead_out_IDEX;
     
     
     //ClkDiv(Clk, Rst, ClkOut);
@@ -76,11 +79,11 @@ module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
     //stage_IF(PCSrc, AddALU_out_MEM, JR, ReadData1_ID, Instruction_IF, 
     //         PCAdder_out_IF, Clk_in, Rst, PC_pin);
     stage_IF top1(PCSrc_MEM, ALUAddResult_ID, JR_out_MEMWB, mux3_result_WB, Instruction_IF, 
-                    PCAdder_out_IF, ClkOut, Reset, PC_pin_out, j_and_jal_out_MEMWB, mux3_result_WB);
+                    PCAdder_out_IF, ClkOut, Reset, PC_pin_out, j_and_jal_out_MEMWB, mux3_result_WB, PCWrite_ID);
     
     
     //IF_ID(PCAdder_in_IFID, Instruction_in_IFID, PCAdder_out_IFID, Instruction_out_IFID, Clk_in);
-    IF_ID top2(PCAdder_out_IF, Instruction_IF, PCAdder_out_IFID, Instruction_out_IFID, ClkOut, Reset);
+    IF_ID top2(PCAdder_out_IF, Instruction_IF, PCAdder_out_IFID, Instruction_out_IFID, ClkOut, Reset, IFIDWrite_ID);
     
     //IF_ID(PCAdder_in_IFID, Instruction_in_IFID, PCAdder_out_IFID, Instruction_out_IFID, Clk_in, Rst);
     
@@ -94,7 +97,7 @@ module Top_Level(Reset, ClkOut, PC_pin_out, write_data_pin);
                     RegWrite_out_ID, MemtoReg_ID, Branch_ID, MemRead_ID, MemWrite_ID, RegDst_ID, ALUOp_ID, 
                     ALUSrc_ID, PCAddResult_out_ID, ReadData1_out_ID, ReadData2_out_ID, SignExtResult_ID, 
                     rt_ID, rd_ID, JR_ID, size_ID, ClkOut, write_data_pin, special_rt_ID, j_and_jal_ID,
-                    ALUAddResult_ID, rs_ID, rt_ID, MemRead_out_IDEX, rt_out_IDEX, rd_out_IDEX, PCWrite_ID, IFIDWrite_ID);
+                    ALUAddResult_ID, /*rs_ID, rt_ID,*/ MemRead_out_IDEX, rt_out_IDEX, rd_out_IDEX, PCWrite_ID, IFIDWrite_ID);
                     
     //ID_EX(PCAddResult_in_IDEX, ReadData1_in_IDEX, ReadData2_in_IDEX, signExtend_in_IDEX, rt_in_IDEX, 
     //            rd_in_IDEX, RegWrite_in_IDEX, MemtoReg_in_IDEX, Branch_in_IDEX, MemRead_in_IDEX, 
