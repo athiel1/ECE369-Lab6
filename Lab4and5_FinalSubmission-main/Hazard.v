@@ -53,14 +53,19 @@ module Hazard(MemRead, RegisterRt, RegisterRd, rs, rt, IFIDWrite, PCWrite, hazar
                 if ((RegisterRt == rs) | (RegisterRt == rt)) begin
                     PCWrite <= 0;
                     IFIDWrite <= 0;
-                    hazardControl = 1;
+                    hazardControl <= 1;
                 end
             end
             else if ((RegisterRd == rs) | (RegisterRd == rt)) begin
                     PCWrite <= 0; 
                     IFIDWrite <= 0; 
-                    hazardControl = 1;
+                    hazardControl <= 1;
             end
+            else if ((RegisterRt == rs) | (RegisterRt == rt)) begin
+                    PCWrite <= 0;
+                    IFIDWrite <= 0;
+                    hazardControl <= 1;
+                end
         end
     end 
 
