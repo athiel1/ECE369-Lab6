@@ -19,7 +19,8 @@ bne $t1, $t0, -12     // PC = 12
 
 
 
-20080004
-01084820	
-1128fffc
-1528fff4
+20080004	//	main:	addi	$t0, $zero, 4 ->	main:	addi	$t0, $zero, 4
+01084820	//		add	$t1, $t0, $t0 ->		add	$t1, $t0, $t0
+1128fffc	//		beq	$t1, $t0, -4 ->		beq	$t1, $t0, -4
+1528fff4	//		bne	$t1, $t0, -12 ->		bne	$t1, $t0, -12
+
