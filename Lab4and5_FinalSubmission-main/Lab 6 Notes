@@ -2,6 +2,7 @@ Saturday 11/16 Notes:
 - may want to change repeats to either for loops or the multiple statement repeat loop format
 - still testing branches and jumps
 - pay attention to control signals for jumps and timing for both jumos and branches
+- need to update github
 
 repeat (<number>)
 	// Single Statement
