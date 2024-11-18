@@ -1,1 +1,8 @@
+Branch and Jump Test for lab 6
+
+addi $t0, $zero, 6        # 
+addi $t1, $t0, 2
+add $t2, $t0, $t1 
+
+
 
